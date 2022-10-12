@@ -189,111 +189,110 @@ squares
 ... ]
     ----------------------------------------------
     [[row[i] for row in matrix] for i in range(4)]
-    El número de retorno se define en el paréntesis seguido del range.
+        El número de retorno se define en el paréntesis seguido del range, además crea una lista a base de la lista llamada matrix.
+
     [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
     ----------------------------------------------
     el cual, a la vez, es lo mismo que:
 
->>>
->>> transposed = []
->>> for i in range(4):
-...     # the following 3 lines implement the nested listcomp
-...     transposed_row = []
-...     for row in matrix:
-...         transposed_row.append(row[i])
-...     transposed.append(transposed_row)
-...
->>> transposed
-[[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
-En el mundo real, deberías preferir funciones predefinidas a declaraciones con flujo complejo. La función zip() haría un buen trabajo para este caso de uso:
+    >>>
+    >>> transposed = []
+    >>> for i in range(4):
+    ...     for row in matrix:
+    ...         transposed_row.append(row[i])
+    ...     transposed.append(transposed_row)
+    ...
+    >>> transposed
+    [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+    ----------------------------------------------
+    En el mundo real, deberías preferir funciones predefinidas a declaraciones con flujo complejo. La función zip() haría un buen trabajo para este caso de uso:
 
->>>
->>> list(zip(*matrix))
-[(1, 5, 9), (2, 6, 10), (3, 7, 11), (4, 8, 12)]
-Ver Desempaquetando una lista de argumentos para detalles en el asterisco de esta línea.
+    >>> list(zip(*matrix))
+    [(1, 5, 9), (2, 6, 10), (3, 7, 11), (4, 8, 12)]
+    Ver Desempaquetando una lista de argumentos para detalles en el asterisco de esta línea.
+    ----------------------------------------------
+    5.2. La instrucción del
+    Hay una manera de quitar un ítem de una lista dado su índice en lugar de su valor: la instrucción del. Esta es diferente del método pop(), el cual retorna un valor. La instrucción del también puede usarse para quitar secciones de una lista o vaciar la lista completa (lo que hacíamos antes asignando una lista vacía a la sección). Por ejemplo:
+    ----------------------------------------------
+    >>> a = [-1, 1, 66.25, 333, 333, 1234.5]
+    >>> del a[0]
+    >>> a
+        Aquí podemos ver que el elemento de la posición 0 ha sido eliminado de la lista
+    ----------------------------------------------
+    [1, 66.25, 333, 333, 1234.5]
+    >>> del a[2:4]
+    >>> a
+    [1, 66.25, 1234.5]
+    >>> del a[:]
+    >>> a
+    []
+    del puede usarse también para eliminar variables:
+    >>>
+    >>> del a
+    Hacer referencia al nombre a de aquí en más es un error (al menos hasta que se le asigne otro valor). Veremos otros usos para del más adelante.
+    ----------------------------------------------
+    5.3. Tuplas y secuencias
+    Vimos que las listas y cadenas tienen propiedades en común, como el indizado y las operaciones de seccionado. Estas son dos ejemplos de datos de tipo secuencia (ver Tipos secuencia — list, tuple, range). Como Python es un lenguaje en evolución, otros datos de tipo secuencia pueden agregarse. Existe otro dato de tipo secuencia estándar: la tupla.
 
-5.2. La instrucción del
-Hay una manera de quitar un ítem de una lista dado su índice en lugar de su valor: la instrucción del. Esta es diferente del método pop(), el cual retorna un valor. La instrucción del también puede usarse para quitar secciones de una lista o vaciar la lista completa (lo que hacíamos antes asignando una lista vacía a la sección). Por ejemplo:
+    Una tupla consiste de un número de valores separados por comas, por ejemplo:
 
->>>
->>> a = [-1, 1, 66.25, 333, 333, 1234.5]
->>> del a[0]
->>> a
-[1, 66.25, 333, 333, 1234.5]
->>> del a[2:4]
->>> a
-[1, 66.25, 1234.5]
->>> del a[:]
->>> a
-[]
-del puede usarse también para eliminar variables:
-
->>>
->>> del a
-Hacer referencia al nombre a de aquí en más es un error (al menos hasta que se le asigne otro valor). Veremos otros usos para del más adelante.
-
-5.3. Tuplas y secuencias
-Vimos que las listas y cadenas tienen propiedades en común, como el indizado y las operaciones de seccionado. Estas son dos ejemplos de datos de tipo secuencia (ver Tipos secuencia — list, tuple, range). Como Python es un lenguaje en evolución, otros datos de tipo secuencia pueden agregarse. Existe otro dato de tipo secuencia estándar: la tupla.
-
-Una tupla consiste de un número de valores separados por comas, por ejemplo:
-
->>>
->>> t = 12345, 54321, 'hello!'
->>> t[0]
-12345
->>> t
-(12345, 54321, 'hello!')
->>> # Tuples may be nested:
-... u = t, (1, 2, 3, 4, 5)
->>> u
-((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
->>> # Tuples are immutable:
+    >>>
+    >>> t = 12345, 54321, 'hello!'
+    >> t[0]
+    12345
+    >>> t
+    (12345, 54321, 'hello!')
+    ----------------------------------------------
+    ... u = t, (1, 2, 3, 4, 5)
+    >>> u
+    ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
+    >>> Las tuplas son incambiables:
 ... t[0] = 88888
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-TypeError: 'tuple' object does not support item assignment
->>> # but they can contain mutable objects:
+>>> # Pero pueden obtener objetos cambiables
 ... v = ([1, 2, 3], [3, 2, 1])
 >>> v
 ([1, 2, 3], [3, 2, 1])
-Como puedes ver, en la salida las tuplas siempre se encierran entre paréntesis, para que las tuplas anidadas puedan interpretarse correctamente; pueden ingresarse con o sin paréntesis, aunque a menudo los paréntesis son necesarios de todas formas (si la tupla es parte de una expresión más grande). No es posible asignar a los ítems individuales de una tupla, pero sin embargo sí se puede crear tuplas que contengan objetos mutables, como las listas.
 
-A pesar de que las tuplas puedan parecerse a las listas, frecuentemente se utilizan en distintas situaciones y para distintos propósitos. Las tuplas son immutable y normalmente contienen una secuencia heterogénea de elementos que son accedidos al desempaquetar (ver más adelante en esta sección) o indizar (o incluso acceder por atributo en el caso de las namedtuples). Las listas son mutable, y sus elementos son normalmente homogéneos y se acceden iterando a la lista.
+    Como puedes ver, en la salida las tuplas siempre se encierran entre paréntesis, para que las tuplas anidadas puedan interpretarse correctamente; pueden ingresarse con o sin paréntesis, aunque a menudo los paréntesis son necesarios de todas formas (si la tupla es parte de una expresión más grande). No es posible asignar a los ítems individuales de una tupla, pero sin embargo sí se puede crear tuplas que contengan objetos mutables, como las listas.
 
-Un problema particular es la construcción de tuplas que contengan 0 o 1 ítem: la sintaxis presenta algunas peculiaridades para estos casos. Las tuplas vacías se construyen mediante un par de paréntesis vacío; una tupla con un ítem se construye poniendo una coma a continuación del valor (no alcanza con encerrar un único valor entre paréntesis). Feo, pero efectivo. Por ejemplo:
+    A pesar de que las tuplas puedan parecerse a las listas, frecuentemente se utilizan en distintas situaciones y para distintos propósitos. Las tuplas son immutable y normalmente contienen una secuencia heterogénea de elementos que son accedidos al desempaquetar (ver más adelante en esta sección) o indizar (o incluso acceder por atributo en el caso de las namedtuples). Las listas son mutable, y sus elementos son normalmente homogéneos y se acceden iterando a la lista.
 
->>>
->>> empty = ()
->>> singleton = 'hello',    # <-- note trailing comma
->>> len(empty)
-0
->>> len(singleton)
-1
->>> singleton
-('hello',)
-La declaración t = 12345, 54321, 'hola!' es un ejemplo de empaquetado de tuplas: los valores 12345, 54321 y 'hola!' se empaquetan juntos en una tupla. La operación inversa también es posible:
+    Un problema particular es la construcción de tuplas que contengan 0 o 1 ítem: la sintaxis   presenta algunas peculiaridades para estos casos. Las tuplas vacías se construyen mediante un par de paréntesis vacío; una tupla con un ítem se construye poniendo una coma a continuación del valor (no alcanza con encerrar un único valor entre paréntesis). Feo, pero efectivo. Por ejemplo:
+    ----------------------------------------------
+    >>>
+    >>> empty = ()
+    >>> singleton = 'hello',    
+    >>> len(empty)
+    0
+    >>> len(singleton)
+    1
+    >>> singleton
+    ('hello',)
+    ----------------------------------------------
+    La declaración t = 12345, 54321, 'hola!' es un ejemplo de empaquetado de tuplas: los valores 12345, 54321 y 'hola!' se empaquetan juntos en una tupla. La operación inversa también es posible:
 
->>>
->>> x, y, z = t
-Esto se llama, apropiadamente, desempaquetado de secuencias, y funciona para cualquier secuencia en el lado derecho del igual. El desempaquetado de secuencias requiere que la cantidad de variables a la izquierda del signo igual sea el tamaño de la secuencia. Notá que la asignación múltiple es en realidad sólo una combinación de empaquetado de tuplas y desempaquetado de secuencias.
+    >>>
+    >>> x, y, z = t
 
-5.4. Conjuntos
-Python también incluye un tipo de dato para conjuntos. Un conjunto es una colección no ordenada y sin elementos repetidos. Los usos básicos de éstos incluyen verificación de pertenencia y eliminación de entradas duplicadas. Los conjuntos también soportan operaciones matemáticas como la unión, intersección, diferencia, y diferencia simétrica.
+    Esto se llama, apropiadamente, desempaquetado de secuencias, y funciona para cualquier secuencia en el lado derecho del igual. El desempaquetado de secuencias requiere que la cantidad de variables a la izquierda del signo igual sea el tamaño de la secuencia. Notá que la asignación múltiple es en realidad sólo una combinación de empaquetado de tuplas y desempaquetado de secuencias.
+    ----------------------------------------------
+    5.4. Conjuntos
+    Python también incluye un tipo de dato para conjuntos. Un conjunto es una colección no ordenada y sin elementos repetidos. Los usos básicos de éstos incluyen verificación de pertenencia y eliminación de entradas duplicadas. Los conjuntos también soportan operaciones matemáticas como la unión, intersección, diferencia, y diferencia simétrica.
 
-Las llaves o la función set() pueden usarse para crear conjuntos. Notá que para crear un conjunto vacío tenés que usar set(), no {}; esto último crea un diccionario vacío, una estructura de datos que discutiremos en la sección siguiente.
+    Las llaves o la función set() pueden usarse para crear conjuntos. Notá que para crear un conjunto vacío tenés que usar set(), no {}; esto último crea un diccionario vacío, una estructura de datos que discutiremos en la sección siguiente.
 
-Una pequeña demostración:
+    Una pequeña demostración:
+    ----------------------------------------------
+    >>>
+    >>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+    >>> print(basket)                      # Los elementos duplicados son eliminados.
+    {'orange', 'banana', 'pear', 'apple'}
+    >>> 'orange' in basket                 # Verificación rápida si existe el elemento  naranja en el conjunto basket.
+    True
+    >>> 'crabgrass' in basket
+    False           
 
->>>
->>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
->>> print(basket)                      # show that duplicates have been removed
-{'orange', 'banana', 'pear', 'apple'}
->>> 'orange' in basket                 # fast membership testing
-True
->>> 'crabgrass' in basket
-False
-
->>> # Demonstrate set operations on unique letters from two words
+    >>> # Demonstrate set operations on unique letters from two words
 ...
 >>> a = set('abracadabra')
 >>> b = set('alacazam')
@@ -466,7 +465,5 @@ Las secuencias pueden compararse con otros objetos del mismo tipo de secuencia. 
 (1, 2, 3)             == (1.0, 2.0, 3.0)
 (1, 2, ('aa', 'ab'))   < (1, 2, ('abc', 'a'), 4)
 Observá que comparar objetos de diferentes tipos con < o > es legal siempre y cuando los objetas tenga los métodos de comparación apropiados. Por ejemplo, los tipos de números mezclados son comparados de acuerdo a su valor numérico, o sea 0 es igual a 0.0, etc. Si no es el caso, en lugar de proveer un ordenamiento arbitrario, el intérprete lanzará una excepción TypeError.
-    ----------------------------------------------
-    ----------------------------------------------
 
 """
